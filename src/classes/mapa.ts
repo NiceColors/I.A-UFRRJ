@@ -27,8 +27,8 @@ export class Mapa {
         }
     }
 
-    public posicionarRobo(robo: Robo) {
-        this.matriz[robo.posicaoLinha][robo.posicaoColuna] = EstadoCelula.Robo;
+    public posicionarRobo(l: number, c: number) {
+        this.matriz[l][c] = EstadoCelula.Robo;
     }
 
     public posicionarMeta(l: number, c: number) {

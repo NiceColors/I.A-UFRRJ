@@ -19,7 +19,7 @@ export class App {
         const mapa = new Mapa(this.LINHAS, this.COLUNAS);
         const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Baixo, mapa);
         
-        mapa.posicionarRobo(robo);
+        mapa.posicionarRobo(this.POS_L_ROBO, this.POS_C_ROBO);
 
         // TODO: VALIDAR POSICAO DA META (DEVE SER DIFERENTE DA POSICAO DO ROBO)
         mapa.posicionarMeta(this.POS_L_META, this.POS_C_META);
