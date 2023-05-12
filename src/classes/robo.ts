@@ -9,7 +9,6 @@ export class Robo {
         private posL: number,
         private posC: number,
         private direcao: Direcao,
-        private movimento: number,
         private mapa: Mapa
     ) {}
 
