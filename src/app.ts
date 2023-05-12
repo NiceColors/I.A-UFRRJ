@@ -6,8 +6,8 @@ import { SituacaoBusca } from "./enums/situacao-busca";
 
 export class App {
     public readonly LIMITE_DE_PASSOS = 30;
-    public readonly LINHAS = 5;
-    public readonly COLUNAS = 5;
+    public readonly LINHAS = 10;
+    public readonly COLUNAS = 10;
 
     public readonly POS_L_ROBO = Math.floor(Math.random() * this.LINHAS);
     public readonly POS_C_ROBO = Math.floor(Math.random() * this.COLUNAS);
@@ -27,9 +27,18 @@ export class App {
         // TODO: VALIDAR PORCENTAGEM DE OBSTACULOS (DEVE ESTAR ENTRE O INTERVALO DE 20 A 60%)
         mapa.posicionarObstaculos();
 
+        const tempoInicial = performance.now();
         // TODO: VALIDAR SE O ROBO CONSEGUIU CHEGAR NA META
         const resultado: SituacaoBusca = robo.search();
+        const tempoFinal = performance.now();
 
-        console.log(resultado);
+        this.imprimeResultado(resultado, robo, tempoFinal - tempoInicial);
+    }
+
+    private imprimeResultado(resultado: SituacaoBusca, robo: Robo, tempoDeBusca: number) {
+        console.log('\n\n:::::::::::::::: RESULTADO ::::::::::::::::');
+        console.log('  - SITUAÇÃO: %s ', resultado);
+        console.log('  - QUANTIDADE DE PASSOS: %d PASSOS ', robo.getQtdPassos());
+        console.log('  - TEMPO DE BUSCA: %fms ', tempoDeBusca);
     }
 }

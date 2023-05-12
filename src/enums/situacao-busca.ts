@@ -1,5 +1,5 @@
 export enum SituacaoBusca {
-    MetaEncontrada,
-    MetaNaoEncontrada,
-    LimiteDePassosExcedido
+    MetaEncontrada = 'META ENCONTRADA',
+    MetaNaoEncontrada = 'META NÃO ENCONTRADA',
+    LimiteDePassosExcedido = 'LIMITE DE PASSOS EXCEDIDO'
 }

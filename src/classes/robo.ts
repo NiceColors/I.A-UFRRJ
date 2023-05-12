@@ -4,8 +4,9 @@ import { SituacaoBusca } from "../enums/situacao-busca";
 import { Mapa } from './mapa'
 
 export class Robo {
-    private locaisParaVisitar: Array<Array<number>> = new Array();
     private qtdPassos = 0;
+    private locaisParaVisitar: Array<Array<number>> = new Array();
+    private trajeto: Array<Array<number>> = new Array();
 
     constructor(
         private posL: number,
@@ -15,7 +16,9 @@ export class Robo {
         private mapa: Mapa
     ) {}
 
-    private trajeto: Array<Array<number>> = new Array();
+    public getQtdPassos() {
+        return this.qtdPassos;
+    }
 
     public search() {
         this.locaisParaVisitar.push([this.posL, this.posC]);
