@@ -4,7 +4,7 @@ export class Mapa {
     private readonly qtdLinhas: number;
     private readonly qtdColunas: number;
     private matriz: Array<Array<EstadoCelula>> = [];
-
+    
     // TODO: Parametrizar os atributos abaixo a partir de uma interface com o usuário
     public readonly COORD_INICIAL = [0, 0];
     public readonly COORD_FINAL = [4, 4];
@@ -43,6 +43,38 @@ export class Mapa {
         } while (qtdObstaculos !== qtdObstaculosInseridos);
     }
 
+    public consultaVizinhos(l: number, c: number) {
+        const vizinhos = [];
+
+        // Esquerda
+        if ((c - 1) >= 0 && this.matriz[l][c - 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l, c - 1]);
+        }
+
+        // Baixo
+        if ((l + 1) < this.qtdLinhas && this.matriz[l + 1][c] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l + 1, c]);
+        }
+        
+        // Direita
+        if ((c + 1) < this.qtdColunas && this.matriz[l][c + 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l, c + 1]);
+        }
+        
+        // Cima
+        if ((l - 1) >= 0 && this.matriz[l - 1][c] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l - 1, c]);
+        }
+
+        return vizinhos;
+    }
+
+    public setCelula(l: number, c: number, estado: EstadoCelula) {
+        this.matriz[l][c] = estado;
+    }
+
+    public metaEncontrada(l: number, c: number) {
+        return this.COORD_FINAL[0] === l && this.COORD_FINAL[1] === c;
     }
 
     public imprimir() {
