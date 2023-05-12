@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #090909;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#matriz {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 500px;
+    height: 500px;
+}
+
+#matriz .celula {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    /* border: solid 2px #ffffff22; */
+    box-shadow: 0 0 0 2px #ffffff22 inset;
+    background-color: #f4f4f411;
+    aspect-ratio: 1 / 1;
+}
+
+#matriz .celula[data-type="."] {
+    background-color: #f4f4f411;
+}
+
+#matriz .celula[data-type="o"] {
+    background-color: lightcoral;
+}
+
+#matriz .celula[data-type="x"] {
+    background-color: #aa1120;
+}
+
+#matriz .celula[data-type="@"] {
+    background-color: whitesmoke;
+}
+
+#matriz .celula[data-type="!"] {
+    background-color: darkslategrey;
+}
