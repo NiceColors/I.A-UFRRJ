@@ -1,9 +1,11 @@
 import { EstadoCelula } from "../enums/estado-celula";
+import { Robo } from "./robo";
 
 export class Mapa {
     private readonly qtdLinhas: number;
     private readonly qtdColunas: number;
     private matriz: Array<Array<EstadoCelula>> = [];
+    private posicaoMeta: Array<number> = [];
     
     // TODO: Parametrizar os atributos abaixo a partir de uma interface com o usuário
     public readonly COORD_INICIAL = [0, 0];
@@ -17,18 +19,26 @@ export class Mapa {
     }
 
     private criarMatriz() {
-        const qtdCelulas = this.qtdLinhas * this.qtdColunas;
-        const qtdObstaculos = Math.floor((qtdCelulas * this.PERCENTUAL_OBSTACULOS) / 100);
-        
         for (let l = 0; l < this.qtdLinhas; l++) {
             this.matriz[l] = new Array<EstadoCelula>();
             for (let c = 0; c < this.qtdColunas; c++) {
                 this.matriz[l][c] = EstadoCelula.Vazia;
             }
         }
+    }
 
-        this.matriz[this.COORD_INICIAL[0]][this.COORD_INICIAL[1]] = EstadoCelula.Robo;
-        this.matriz[this.COORD_FINAL[0]][this.COORD_FINAL[1]] = EstadoCelula.Meta;
+    public posicionarRobo(robo: Robo) {
+        this.matriz[robo.posicaoLinha][robo.posicaoColuna] = EstadoCelula.Robo;
+    }
+
+    public posicionarMeta(l: number, c: number) {
+        this.matriz[l][c] = EstadoCelula.Meta;
+        this.posicaoMeta = [l, c];
+    }
+
+    public posicionarObstaculos(percentual = 30) {
+        const qtdCelulas = this.qtdLinhas * this.qtdColunas;
+        const qtdObstaculos = Math.floor((qtdCelulas * percentual) / 100);
 
         let qtdObstaculosInseridos = 0;
         do {
@@ -74,7 +84,7 @@ export class Mapa {
     }
 
     public metaEncontrada(l: number, c: number) {
-        return this.COORD_FINAL[0] === l && this.COORD_FINAL[1] === c;
+        return this.posicaoMeta[0] === l && this.posicaoMeta[1] === c;
     }
 
     public imprimir() {
