@@ -17,6 +17,9 @@ export class Mapa {
     }
 
     private criarMatriz() {
+        const qtdCelulas = this.qtdLinhas * this.qtdColunas;
+        const qtdObstaculos = Math.floor((qtdCelulas * this.PERCENTUAL_OBSTACULOS) / 100);
+        
         for (let l = 0; l < this.qtdLinhas; l++) {
             this.matriz[l] = new Array<EstadoCelula>();
             for (let c = 0; c < this.qtdColunas; c++) {
@@ -26,6 +29,20 @@ export class Mapa {
 
         this.matriz[this.COORD_INICIAL[0]][this.COORD_INICIAL[1]] = EstadoCelula.Robo;
         this.matriz[this.COORD_FINAL[0]][this.COORD_FINAL[1]] = EstadoCelula.Meta;
+
+        let qtdObstaculosInseridos = 0;
+        do {
+            const linhaSugerida = Math.floor(Math.random() * this.qtdLinhas);
+            const colunaSugerida = Math.floor(Math.random() * this.qtdColunas);
+            
+            if (this.matriz[linhaSugerida][colunaSugerida] === EstadoCelula.Vazia) {
+                this.matriz[linhaSugerida][colunaSugerida] = EstadoCelula.Obstaculo;
+                qtdObstaculosInseridos++;
+            }
+
+        } while (qtdObstaculos !== qtdObstaculosInseridos);
+    }
+
     }
 
 }
