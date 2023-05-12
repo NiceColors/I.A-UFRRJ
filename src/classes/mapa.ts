@@ -6,11 +6,6 @@ export class Mapa {
     private readonly qtdColunas: number;
     private matriz: Array<Array<EstadoCelula>> = [];
     private posicaoMeta: Array<number> = [];
-    
-    // TODO: Parametrizar os atributos abaixo a partir de uma interface com o usuário
-    public readonly COORD_INICIAL = [0, 0];
-    public readonly COORD_FINAL = [4, 4];
-    public readonly PERCENTUAL_OBSTACULOS = 20;
 
     constructor(linhas: number, colunas: number) {
         this.qtdLinhas = linhas;

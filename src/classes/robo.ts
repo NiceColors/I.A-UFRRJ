@@ -5,6 +5,7 @@ import { Mapa } from './mapa'
 
 export class Robo {
     private locaisParaVisitar: Array<Array<number>> = new Array();
+    private qtdPassos = 0;
 
     constructor(
         private posL: number,
@@ -16,19 +17,13 @@ export class Robo {
     private trajeto: Array<Array<number>> = new Array();
 
     public search() {
-        console.log('FRAME 1');
-        this.mapa.imprimir();
-        console.log('-------');
-        
-        let qtdPassos = 0;
         this.locaisParaVisitar.push([this.posL, this.posC]);
-        this.trajeto.push([this.posL, this.posC]);
 
-        // console.log(this.locaisParaVisitar);
+        while (this.locaisParaVisitar.length > 0 && this.qtdPassos < 30) {
+            const [novaPosX, novaPosY] = this.locaisParaVisitar.pop();
+            this.movimentar(novaPosX, novaPosY);
 
-        while (this.locaisParaVisitar.length > 0 && qtdPassos < 30) {
             const vizinhos = this.mapa.consultaVizinhos(this.posL, this.posC);
-
             for (const vizinho of vizinhos) {
                 const localExplorado = this.trajeto.some((v) => {
                     return v[0] === vizinho[0] && v[1] === vizinho[1];
@@ -39,21 +34,18 @@ export class Robo {
                 }
             }
 
-            const [novaPosX, novaPosY] = this.locaisParaVisitar.pop();
-    
-            this.movimentar(novaPosX, novaPosY);
-            qtdPassos++;
+            this.qtdPassos++;
 
-            console.log('\nFRAME %d', qtdPassos + 1);
+            console.log('\nFRAME %d', this.qtdPassos);
             this.mapa.imprimir();
-            console.log('-------');
+            console.log('--------------');
 
             if (this.mapa.metaEncontrada(this.posL, this.posC)) {
                 return SituacaoBusca.MetaEncontrada;
             }
         }
 
-        return (qtdPassos === 30) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
+        return (this.qtdPassos === 30) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
 
     private movimentar(posL: number, posC: number) {
