@@ -4,7 +4,13 @@ import { Robo } from "./robo";
 export class Mapa {
     private readonly qtdLinhas: number;
     private readonly qtdColunas: number;
-    private matriz: Array<Array<EstadoCelula>> = [];
+    private matriz: Array<Array<EstadoCelula>> = [
+        // [0, 0, 0, 2, 0],
+        // [0, 0, 0, 0, 0],
+        // [1, 1, 1, 0, 0],
+        // [1, 0, 1, 0, 0],
+        // [3, 0, 1, 0, 0],
+    ];
     private posicaoMeta: Array<number> = [];
 
     constructor(linhas: number, colunas: number) {
@@ -51,14 +57,29 @@ export class Mapa {
     public consultaVizinhos(l: number, c: number) {
         const vizinhos = [];
 
+        // Cima esquerda
+        if ((l - 1) >= 0 && (c - 1) >= 0 && this.matriz[l - 1][c - 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l - 1, c - 1]);
+        }
+
         // Esquerda
         if ((c - 1) >= 0 && this.matriz[l][c - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push([l, c - 1]);
         }
 
+        // Baixo esquerda
+        if ((l + 1) < this.qtdLinhas && (c - 1) >= 0 && this.matriz[l + 1][c - 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l + 1, c - 1]);
+        }
+
         // Baixo
         if ((l + 1) < this.qtdLinhas && this.matriz[l + 1][c] !== EstadoCelula.Obstaculo) {
             vizinhos.push([l + 1, c]);
+        }
+
+        // Baixo direita
+        if ((l + 1) < this.qtdLinhas && (c + 1) < this.qtdColunas && this.matriz[l + 1][c + 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l + 1, c + 1]);
         }
         
         // Direita
@@ -66,6 +87,11 @@ export class Mapa {
             vizinhos.push([l, c + 1]);
         }
         
+        // Cima direita
+        if ((l - 1) >= 0 && (c + 1) < this.qtdColunas && this.matriz[l - 1][c + 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push([l - 1, c + 1]);
+        }
+
         // Cima
         if ((l - 1) >= 0 && this.matriz[l - 1][c] !== EstadoCelula.Obstaculo) {
             vizinhos.push([l - 1, c]);
