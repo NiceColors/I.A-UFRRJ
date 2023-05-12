@@ -45,4 +45,30 @@ export class Mapa {
 
     }
 
+    public imprimir() {
+        for (let l = 0; l < this.qtdLinhas; l++) {
+            let string = '|';
+            
+            for (let c = 0; c < this.qtdColunas; c++) {
+                switch (this.matriz[l][c]) {
+                    case EstadoCelula.Meta:
+                        string += 'x';
+                        break;
+                    case EstadoCelula.Robo:
+                        string += '@';
+                        break;
+                    case EstadoCelula.Obstaculo:
+                        string += 'o';
+                        break;
+                    case EstadoCelula.Vazia:
+                    default:
+                        string += '.';
+                        break;
+                }
+            }
+
+            string += '|';
+            console.log(string);
+        }
+    }
 }
