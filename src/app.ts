@@ -2,12 +2,13 @@
 import { Mapa } from "./classes/mapa";
 import { Robo } from "./classes/robo";
 import { Direcao } from "./enums/direcao";
+import { SituacaoBusca } from "./enums/situacao-busca";
 
 export class App {
     public readonly LIMITE_DE_PASSOS = 30;
     public readonly LINHAS = 5;
     public readonly COLUNAS = 5;
-    
+
     public readonly POS_L_ROBO = Math.floor(Math.random() * this.LINHAS);
     public readonly POS_C_ROBO = Math.floor(Math.random() * this.COLUNAS);
 
@@ -25,5 +26,10 @@ export class App {
         
         // TODO: VALIDAR PORCENTAGEM DE OBSTACULOS (DEVE ESTAR ENTRE O INTERVALO DE 20 A 60%)
         mapa.posicionarObstaculos();
+
+        // TODO: VALIDAR SE O ROBO CONSEGUIU CHEGAR NA META
+        const resultado: SituacaoBusca = robo.search();
+
+        console.log(resultado);
     }
 }

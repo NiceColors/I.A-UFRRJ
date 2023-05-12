@@ -1,5 +1,6 @@
 import { Direcao } from "../enums/direcao";
 import { EstadoCelula } from "../enums/estado-celula";
+import { SituacaoBusca } from "../enums/situacao-busca";
 import { Mapa } from './mapa'
 
 export class Robo {
@@ -25,7 +26,7 @@ export class Robo {
 
         // console.log(this.locaisParaVisitar);
 
-        while (this.locaisParaVisitar.length > 0 && qtdPassos < 10) {
+        while (this.locaisParaVisitar.length > 0 && qtdPassos < 30) {
             const vizinhos = this.mapa.consultaVizinhos(this.posL, this.posC);
 
             for (const vizinho of vizinhos) {
@@ -48,10 +49,11 @@ export class Robo {
             console.log('-------');
 
             if (this.mapa.metaEncontrada(this.posL, this.posC)) {
-                return;
+                return SituacaoBusca.MetaEncontrada;
             }
-            // console.log(this.locaisParaVisitar);
         }
+
+        return (qtdPassos === 30) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
 
     private movimentar(posL: number, posC: number) {
