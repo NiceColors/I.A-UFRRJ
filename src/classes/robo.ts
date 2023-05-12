@@ -11,6 +11,7 @@ export class Robo {
         private posL: number,
         private posC: number,
         private direcao: Direcao,
+        private limiteDePassos: number,
         private mapa: Mapa
     ) {}
 
@@ -19,7 +20,7 @@ export class Robo {
     public search() {
         this.locaisParaVisitar.push([this.posL, this.posC]);
 
-        while (this.locaisParaVisitar.length > 0 && this.qtdPassos < 30) {
+        while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
             const [novaPosX, novaPosY] = this.locaisParaVisitar.pop();
             this.movimentar(novaPosX, novaPosY);
 
@@ -45,7 +46,7 @@ export class Robo {
             }
         }
 
-        return (this.qtdPassos === 30) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
+        return (this.qtdPassos === this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
 
     private movimentar(posL: number, posC: number) {

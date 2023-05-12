@@ -17,7 +17,7 @@ export class App {
 
     public run() {
         const mapa = new Mapa(this.LINHAS, this.COLUNAS);
-        const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Baixo, mapa);
+        const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Baixo, this.LIMITE_DE_PASSOS, mapa);
         
         mapa.posicionarRobo(this.POS_L_ROBO, this.POS_C_ROBO);
 
