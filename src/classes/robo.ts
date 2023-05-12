@@ -26,6 +26,7 @@ export class Robo {
         while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
             const [novaPosX, novaPosY] = this.locaisParaVisitar.pop();
             this.movimentar(novaPosX, novaPosY);
+            this.trajeto.push([this.posL, this.posC]);
 
             const vizinhos = this.mapa.consultaVizinhos(this.posL, this.posC);
             for (const vizinho of vizinhos) {
@@ -42,7 +43,7 @@ export class Robo {
 
             console.log('\nFRAME %d', this.qtdPassos);
             this.mapa.imprimir();
-            console.log('--------------');
+            console.log('-------');
 
             if (this.mapa.metaEncontrada(this.posL, this.posC)) {
                 return SituacaoBusca.MetaEncontrada;
@@ -54,11 +55,8 @@ export class Robo {
 
     private movimentar(posL: number, posC: number) {
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Vazia);
-
         this.posL = posL;
         this.posC = posC;
-
-        this.trajeto.push([this.posL, this.posC]);
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
     }
 }

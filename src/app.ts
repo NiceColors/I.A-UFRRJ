@@ -28,7 +28,6 @@ export class App {
         mapa.posicionarObstaculos();
 
         const tempoInicial = performance.now();
-        // TODO: VALIDAR SE O ROBO CONSEGUIU CHEGAR NA META
         const resultado: SituacaoBusca = robo.search();
         const tempoFinal = performance.now();
 
