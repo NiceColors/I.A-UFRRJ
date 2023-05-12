@@ -1,7 +1,7 @@
 export enum EstadoCelula {
-    Vazia,
-    Obstaculo,
-    Meta,
-    Robo,
-    MetaEncontrada
+    Vazia = '.',
+    Obstaculo = 'o',
+    Meta = 'x',
+    Robo = '@',
+    MetaEncontrada = '!'
 }
