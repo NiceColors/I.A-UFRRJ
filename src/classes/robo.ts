@@ -56,11 +56,14 @@ export class Robo {
         return (this.qtdPassos === this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
 
-    private movimentar(posL: number, posC: number) {
+    private async movimentar(celula: Celula) {
+        this.qtdPassos++;
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Vazia);
-        this.posL = posL;
-        this.posC = posC;
+        this.posL = celula.linha;
+        this.posC = celula.coluna;
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
+        celula.receberVisita();
 
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
 }
