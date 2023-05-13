@@ -29,14 +29,20 @@ export class Robo {
             this.movimentar(novaPosX, novaPosY);
             this.trajeto.push([this.posL, this.posC]);
 
-            const vizinhos = this.mapa.consultaVizinhos(this.posL, this.posC);
-            for (const vizinho of vizinhos) {
+            const vizinhos = this.mapa.consultaVizinhos(celula);
+            for (let i = 0; i < vizinhos.length; i++) {
+                const vizinho = vizinhos[i];
                 const localExplorado = this.trajeto.some((v) => {
-                    return v[0] === vizinho[0] && v[1] === vizinho[1];
+                    return v[0] === vizinho.linha && v[1] === vizinho.coluna;
                 });
 
-                if (!localExplorado) {
-                    this.locaisParaVisitar.push(vizinho);
+                const localJaSeraVisitado = this.locaisParaVisitar.some((v) => {
+                    return v.linha === vizinho.linha && v.coluna === vizinho.coluna;
+                });
+
+                if (localExplorado || localJaSeraVisitado) {
+                    vizinhos.splice(i, 1);
+                    i--;
                 }
             }
 
