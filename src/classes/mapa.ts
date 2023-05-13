@@ -104,6 +104,8 @@ export class Mapa {
 
     public setCelula(l: number, c: number, estado: EstadoCelula) {
         this.matriz[l][c] = estado;
+
+        document.querySelector(`.celula[data-linha="${l}"][data-coluna="${c}"]`).setAttribute('data-type', estado); // = `celula ${estado}`;
     }
 
     public metaEncontrada(l: number, c: number) {
