@@ -83,6 +83,6 @@ export class Robo {
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
         celula.receberVisita();
 
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 200));
     }
 }

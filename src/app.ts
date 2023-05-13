@@ -4,7 +4,7 @@ import { Robo } from "./classes/robo";
 import { SituacaoBusca } from "./enums/situacao-busca";
 
 export class App {
-    public readonly LIMITE_DE_PASSOS = 3000;
+    public readonly LIMITE_DE_PASSOS = 50;
     public readonly LINHAS = 10;
     public readonly COLUNAS = 10;
 
@@ -27,18 +27,19 @@ export class App {
         // TODO: VALIDAR PORCENTAGEM DE OBSTACULOS (DEVE ESTAR ENTRE O INTERVALO DE 20 A 60%)
         this.mapa.posicionarObstaculos();
 
-        const tempoInicial = performance.now();
         const resultado: Promise<SituacaoBusca> = robo.buscaEmProfundidade();
-        const tempoFinal = performance.now();
 
-        this.imprimeResultado(await resultado, robo, tempoFinal - tempoInicial);
+        this.imprimeResultado(await resultado, robo);
 
     }
 
-    private imprimeResultado(resultado: SituacaoBusca, robo: Robo, tempoDeBusca: number) {
-        console.log('\n\n:::::::::::::::: RESULTADO ::::::::::::::::');
-        console.log('  - SITUAÇÃO: %s ', resultado);
-        console.log('  - QUANTIDADE DE PASSOS: %d PASSOS ', robo.getQtdPassos());
-        console.log('  - TEMPO DE BUSCA: %fms ', tempoDeBusca);
+    private imprimeResultado(resultado: SituacaoBusca, robo: Robo) {
+        alert(`RESULTADO
+               \n  - SITUAÇÃO: ${resultado}
+               \n  - QUANTIDADE DE PASSOS: ${robo.getQtdPassos()} PASSOS`
+        );
+        // console.log('\n\n:::::::::::::::: RESULTADO ::::::::::::::::');
+        // console.log('  - SITUAÇÃO: %s ', resultado);
+        // console.log('  - QUANTIDADE DE PASSOS: %d PASSOS ', robo.getQtdPassos());
     }
 }

@@ -24,9 +24,7 @@ body {
     grid-auto-columns: minmax(0, 1fr);
     gap: 12px;
     padding: 20px;
-    width: 500px;
-    max-width: 500px;
-    max-height: max-content;
+    min-width: 500px;
 }
 
 #matriz .celula {
@@ -37,6 +35,8 @@ body {
     box-shadow: 0 0 0 2px #ffffff22 inset;
     background-color: #f4f4f411;
     aspect-ratio: 1 / 1;
+    min-width: 10px;
+    min-height: 10px;
 }
 
 #matriz .celula[data-type="."] {
