@@ -1,11 +1,12 @@
 import { Direcao } from "../enums/direcao";
 import { EstadoCelula } from "../enums/estado-celula";
-import { Mapa } from './mapa'
 import { SituacaoBusca } from "../enums/situacao-busca";
+import { Celula } from "./celula";
+import { Mapa } from './mapa'
 
 export class Robo {
     private qtdPassos = 0;
-    private locaisParaVisitar: Array<Array<number>> = new Array();
+    private locaisParaVisitar: Array<Celula> = new Array();
     private trajeto: Array<Array<number>> = new Array();
 
     constructor(
@@ -14,19 +15,25 @@ export class Robo {
         private direcao: Direcao,
         private limiteDePassos: number,
         private mapa: Mapa
-    ) { }
+    ) {}
 
     public getQtdPassos() {
         return this.qtdPassos;
     }
 
     public async buscaEmProfundidade(): Promise<SituacaoBusca> {
-        this.locaisParaVisitar.push([this.posL, this.posC]);
+        this.locaisParaVisitar.push(new Celula(this.posL, this.posC));
 
         while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
+            const celula = this.locaisParaVisitar.pop();
 
-            const [novaPosX, novaPosY] = this.locaisParaVisitar.pop();
-            this.movimentar(novaPosX, novaPosY);
+            await this.movimentar(celula);
+
+            if (this.mapa.metaEncontrada(this.posL, this.posC)) {
+                this.mapa.setCelula(this.posL, this.posC, EstadoCelula.MetaEncontrada);
+                return SituacaoBusca.MetaEncontrada;
+            }
+
             this.trajeto.push([this.posL, this.posC]);
 
             const vizinhos = this.mapa.consultaVizinhos(celula);
@@ -45,7 +52,7 @@ export class Robo {
                     i--;
                 }
             }
-
+            
             if (vizinhos.length === 0) {
                 let celulaTemporaria = celula.pai;
                 while (celulaTemporaria !== null) {
@@ -53,7 +60,7 @@ export class Robo {
 
                     if (!celulaTemporaria.fechado) {
                         break;
-            }
+                    }
 
                     celulaTemporaria = celulaTemporaria.pai;
                 }
