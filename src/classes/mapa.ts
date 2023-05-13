@@ -28,6 +28,8 @@ export class Mapa {
         }
     }
 
+    public getMatriz = () => this.matriz;
+
     public posicionarRobo(l: number, c: number) {
         this.matriz[l][c] = EstadoCelula.Robo;
     }
@@ -45,7 +47,7 @@ export class Mapa {
         do {
             const linhaSugerida = Math.floor(Math.random() * this.qtdLinhas);
             const colunaSugerida = Math.floor(Math.random() * this.qtdColunas);
-            
+
             if (this.matriz[linhaSugerida][colunaSugerida] === EstadoCelula.Vazia) {
                 this.matriz[linhaSugerida][colunaSugerida] = EstadoCelula.Obstaculo;
                 qtdObstaculosInseridos++;
@@ -81,12 +83,12 @@ export class Mapa {
         if ((l + 1) < this.qtdLinhas && (c + 1) < this.qtdColunas && this.matriz[l + 1][c + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push([l + 1, c + 1]);
         }
-        
+
         // Direita
         if ((c + 1) < this.qtdColunas && this.matriz[l][c + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push([l, c + 1]);
         }
-        
+
         // Cima direita
         if ((l - 1) >= 0 && (c + 1) < this.qtdColunas && this.matriz[l - 1][c + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push([l - 1, c + 1]);
@@ -109,15 +111,27 @@ export class Mapa {
     }
 
     public imprimir() {
-        for (let l = 0; l < this.qtdLinhas; l++) {
-            let string = '|';
-            
-            for (let c = 0; c < this.qtdColunas; c++) {
-                string += this.matriz[l][c];
-            }
+        const matrizHtml = document.getElementById('matriz');
 
-            string += '|';
-            console.log(string);
+        matrizHtml.innerHTML = '';
+
+        for (let l = 0; l < this.qtdLinhas; l++) {
+            for (let c = 0; c < this.qtdColunas; c++) {
+                let celula = this.matriz[l][c];
+
+                const divCelula = document.createElement('div');
+                divCelula.classList.add('celula');
+                divCelula.setAttribute('data-linha', c.toString());
+                divCelula.setAttribute('data-coluna', c.toString());
+                divCelula.setAttribute('data-type', celula);
+
+                matrizHtml.appendChild(divCelula);
+            }
         }
+
+
+
+        console.log(this.matriz.findIndex((linha) => linha.includes(EstadoCelula.Robo)));
+
     }
 }

@@ -1,7 +1,7 @@
 import { Direcao } from "../enums/direcao";
 import { EstadoCelula } from "../enums/estado-celula";
-import { SituacaoBusca } from "../enums/situacao-busca";
 import { Mapa } from './mapa'
+import { SituacaoBusca } from "../enums/situacao-busca";
 
 export class Robo {
     private qtdPassos = 0;
@@ -14,16 +14,17 @@ export class Robo {
         private direcao: Direcao,
         private limiteDePassos: number,
         private mapa: Mapa
-    ) {}
+    ) { }
 
     public getQtdPassos() {
         return this.qtdPassos;
     }
 
-    public search() {
+    public async search(): Promise<SituacaoBusca> {
         this.locaisParaVisitar.push([this.posL, this.posC]);
 
         while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
+
             const [novaPosX, novaPosY] = this.locaisParaVisitar.pop();
             this.movimentar(novaPosX, novaPosY);
             this.trajeto.push([this.posL, this.posC]);
@@ -41,13 +42,15 @@ export class Robo {
 
             this.qtdPassos++;
 
-            console.log('\nFRAME %d', this.qtdPassos);
+
             this.mapa.imprimir();
-            console.log('-------');
 
             if (this.mapa.metaEncontrada(this.posL, this.posC)) {
                 return SituacaoBusca.MetaEncontrada;
             }
+
+            await new Promise(resolve => setTimeout(resolve, 200));
+
         }
 
         return (this.qtdPassos === this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
@@ -58,5 +61,6 @@ export class Robo {
         this.posL = posL;
         this.posC = posC;
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
+
     }
 }
