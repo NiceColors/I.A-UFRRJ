@@ -40,17 +40,23 @@ export class Robo {
                 }
             }
 
-            this.qtdPassos++;
+            if (vizinhos.length === 0) {
+                let celulaTemporaria = celula.pai;
+                while (celulaTemporaria !== null) {
+                    await this.movimentar(celulaTemporaria);
 
-
-            this.mapa.imprimir();
-
-            if (this.mapa.metaEncontrada(this.posL, this.posC)) {
-                return SituacaoBusca.MetaEncontrada;
+                    if (!celulaTemporaria.fechado) {
+                        break;
             }
 
-            await new Promise(resolve => setTimeout(resolve, 200));
-
+                    celulaTemporaria = celulaTemporaria.pai;
+                }
+            } else {
+                for (const vizinho of vizinhos) {
+                    this.locaisParaVisitar.push(vizinho);
+                    celula.atribuirFilho(vizinho);
+                }
+            }
         }
 
         return (this.qtdPassos === this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
