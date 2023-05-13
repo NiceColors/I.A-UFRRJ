@@ -20,7 +20,7 @@ export class Robo {
         return this.qtdPassos;
     }
 
-    public async search(): Promise<SituacaoBusca> {
+    public async buscaEmProfundidade(): Promise<SituacaoBusca> {
         this.locaisParaVisitar.push([this.posL, this.posC]);
 
         while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {

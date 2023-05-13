@@ -28,7 +28,7 @@ export class App {
         this.mapa.posicionarObstaculos();
 
         const tempoInicial = performance.now();
-        const resultado: Promise<SituacaoBusca> = robo.search();
+        const resultado: Promise<SituacaoBusca> = robo.buscaEmProfundidade();
         const tempoFinal = performance.now();
 
         this.imprimeResultado(await resultado, robo, tempoFinal - tempoInicial);
