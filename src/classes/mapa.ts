@@ -1,17 +1,11 @@
 import { EstadoCelula } from "../enums/estado-celula";
-import { Robo } from "./robo";
+import { Celula } from "./celula";
 
 export class Mapa {
     private readonly qtdLinhas: number;
     private readonly qtdColunas: number;
-    private matriz: Array<Array<EstadoCelula>> = [
-        // [0, 0, 0, 2, 0],
-        // [0, 0, 0, 0, 0],
-        // [1, 1, 1, 0, 0],
-        // [1, 0, 1, 0, 0],
-        // [3, 0, 1, 0, 0],
-    ];
-    private posicaoMeta: Array<number> = [];
+    private matriz: Array<Array<EstadoCelula>> = [];
+    public posicaoMeta: Array<number> = [];
 
     constructor(linhas: number, colunas: number) {
         this.qtdLinhas = linhas;
@@ -24,6 +18,26 @@ export class Mapa {
             this.matriz[l] = new Array<EstadoCelula>();
             for (let c = 0; c < this.qtdColunas; c++) {
                 this.matriz[l][c] = EstadoCelula.Vazia;
+            }
+        }
+
+        const matrizHtml = document.getElementById('matriz');
+        matrizHtml.innerHTML = '';
+
+        for (let l = 0; l < this.qtdLinhas; l++) {
+            for (let c = 0; c < this.qtdColunas; c++) {
+                let celula = this.matriz[l][c];
+
+                const divCelula = document.createElement('div');
+                divCelula.classList.add('celula');
+                divCelula.setAttribute('data-linha', l.toString());
+                divCelula.setAttribute('data-coluna', c.toString());
+                divCelula.setAttribute('data-type', celula);
+
+                matrizHtml.appendChild(divCelula);
+
+                matrizHtml.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
+                matrizHtml.style.gridTemplateRows = `repeat(${this.qtdLinhas}, 1fr)`;
             }
         }
     }
@@ -83,12 +97,12 @@ export class Mapa {
         // if ((l + 1) < this.qtdLinhas && (c + 1) < this.qtdColunas && this.matriz[l + 1][c + 1] !== EstadoCelula.Obstaculo) {
         //     vizinhos.push([l + 1, c + 1]);
         // }
-
+        
         // Direita
         if ((celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha, celula.coluna + 1, celula));
         }
-
+        
         // // Cima direita
         // if ((l - 1) >= 0 && (c + 1) < this.qtdColunas && this.matriz[l - 1][c + 1] !== EstadoCelula.Obstaculo) {
         //     vizinhos.push([l - 1, c + 1]);
@@ -112,28 +126,17 @@ export class Mapa {
         return this.posicaoMeta[0] === l && this.posicaoMeta[1] === c;
     }
 
-    public imprimir() {
-        const matrizHtml = document.getElementById('matriz');
-
-        matrizHtml.innerHTML = '';
-
-        for (let l = 0; l < this.qtdLinhas; l++) {
-            for (let c = 0; c < this.qtdColunas; c++) {
-                let celula = this.matriz[l][c];
-
-                const divCelula = document.createElement('div');
-                divCelula.classList.add('celula');
-                divCelula.setAttribute('data-linha', c.toString());
-                divCelula.setAttribute('data-coluna', c.toString());
-                divCelula.setAttribute('data-type', celula);
-
-                matrizHtml.appendChild(divCelula);
-            }
-        }
-
-
-
-        console.log(this.matriz.findIndex((linha) => linha.includes(EstadoCelula.Robo)));
-
-    }
+    // private frames = 0;
+    // public imprimirDebug() {
+    //     this.frames++;
+    //     console.log('\nFRAME %d', this.frames);
+    //     for (let l = 0; l < this.qtdLinhas; l++) {
+    //         let string = '|';
+    //         for (let c = 0; c < this.qtdColunas; c++) {
+    //             string += this.matriz[l][c];
+    //         }
+    //         console.log(string + '|');
+    //     }
+    //     console.log('-------');
+    // }
 }
