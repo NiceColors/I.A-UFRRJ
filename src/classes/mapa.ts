@@ -31,11 +31,11 @@ export class Mapa {
     public getMatriz = () => this.matriz;
 
     public posicionarRobo(l: number, c: number) {
-        this.matriz[l][c] = EstadoCelula.Robo;
+        this.setCelula(l, c, EstadoCelula.Robo);
     }
 
     public posicionarMeta(l: number, c: number) {
-        this.matriz[l][c] = EstadoCelula.Meta;
+        this.setCelula(l, c, EstadoCelula.Meta);
         this.posicaoMeta = [l, c];
     }
 
@@ -49,7 +49,7 @@ export class Mapa {
             const colunaSugerida = Math.floor(Math.random() * this.qtdColunas);
 
             if (this.matriz[linhaSugerida][colunaSugerida] === EstadoCelula.Vazia) {
-                this.matriz[linhaSugerida][colunaSugerida] = EstadoCelula.Obstaculo;
+                this.setCelula(linhaSugerida, colunaSugerida, EstadoCelula.Obstaculo);
                 qtdObstaculosInseridos++;
             }
 
