@@ -2,22 +2,21 @@ import { EstadoCelula } from "../enums/estado-celula";
 import { Celula } from "./celula";
 
 export class Mapa {
+    private mapaRef: HTMLElement
     private matriz: Array<Array<EstadoCelula>> = [];
     public posicaoMeta: Array<number> = [];
-
-    private elementRef: HTMLElement
 
     constructor(
         private readonly qtdLinhas: number,
         private readonly qtdColunas: number,
         elementoRaiz: HTMLElement
     ) {
-        this.elementRef = elementoRaiz.querySelector('#matriz');
+        this.mapaRef = elementoRaiz.querySelector('#matriz');
         this.criarMatriz();
     }
 
     private criarMatriz() {
-        this.elementRef.innerHTML = '';
+        this.mapaRef.innerHTML = '';
         
         for (let l = 0; l < this.qtdLinhas; l++) {
             this.matriz[l] = new Array<EstadoCelula>();
@@ -32,9 +31,9 @@ export class Mapa {
                 divCelula.setAttribute('data-coluna', c.toString());
                 divCelula.setAttribute('data-type', celula);
 
-                this.elementRef.appendChild(divCelula);
-                this.elementRef.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
-                this.elementRef.style.gridTemplateRows = `repeat(${this.qtdLinhas}, 1fr)`;
+                this.mapaRef.appendChild(divCelula);
+                this.mapaRef.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
+                this.mapaRef.style.gridTemplateRows = `repeat(${this.qtdLinhas}, 1fr)`;
             }
         }
     }
@@ -113,8 +112,7 @@ export class Mapa {
 
     public setCelula(l: number, c: number, estado: EstadoCelula) {
         this.matriz[l][c] = estado;
-
-        document.querySelector(`.celula[data-linha="${l}"][data-coluna="${c}"]`).setAttribute('data-type', estado); // = `celula ${estado}`;
+        this.mapaRef.querySelector(`.celula[data-linha="${l}"][data-coluna="${c}"]`).setAttribute('data-type', estado);
     }
 
     public metaEncontrada(l: number, c: number) {
