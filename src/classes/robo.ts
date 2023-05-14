@@ -91,6 +91,10 @@ export class Robo {
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
         celula.receberVisita();
 
+        const [roboTop, roboLeft] = this.mapa.getPosicaoElementoCelulaRobo();
+        this.roboRef.style.top = `${roboTop + 5}px`;
+        this.roboRef.style.left = `${roboLeft + 5}px`;
+
         await new Promise(resolve => setTimeout(resolve, 200));
     }
 }
