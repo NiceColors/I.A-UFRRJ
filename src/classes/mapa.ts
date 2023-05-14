@@ -42,8 +42,6 @@ export class Mapa {
         }
     }
 
-    public getMatriz = () => this.matriz;
-
     public posicionarRobo(l: number, c: number) {
         this.setCelula(l, c, EstadoCelula.Robo);
     }
