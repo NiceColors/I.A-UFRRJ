@@ -87,7 +87,7 @@ export class Robo {
     }
 
     private async movimentar(celula: Celula) {
-        this.girarParaNovaCelula(celula);
+        await this.girarParaNovaCelula(celula);
         this.qtdPassos++;
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Vazia);
         this.posL = celula.linha;
