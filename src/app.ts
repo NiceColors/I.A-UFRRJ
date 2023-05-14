@@ -4,17 +4,22 @@ import { Robo } from "./classes/robo";
 import { SituacaoBusca } from "./enums/situacao-busca";
 
 export class App {
+    public readonly elementRef: HTMLElement;
     public readonly LIMITE_DE_PASSOS = 50;
     public readonly LINHAS = 10;
     public readonly COLUNAS = 10;
 
     public readonly POS_L_ROBO = Math.floor(Math.random() * this.LINHAS);
     public readonly POS_C_ROBO = Math.floor(Math.random() * this.COLUNAS);
-
     public readonly POS_L_META = Math.floor(Math.random() * this.LINHAS);
     public readonly POS_C_META = Math.floor(Math.random() * this.COLUNAS);
 
-    private mapa = new Mapa(this.LINHAS, this.COLUNAS);
+    private mapa: Mapa;
+    
+    constructor() {
+        this.elementRef = document.querySelector('#app');
+        this.mapa = new Mapa(this.LINHAS, this.COLUNAS, this.elementRef);
+    }
 
     public async run() {
         const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Baixo, this.LIMITE_DE_PASSOS, this.mapa);
@@ -38,8 +43,5 @@ export class App {
                \n  - SITUAÇÃO: ${resultado}
                \n  - QUANTIDADE DE PASSOS: ${robo.getQtdPassos()} PASSOS`
         );
-        // console.log('\n\n:::::::::::::::: RESULTADO ::::::::::::::::');
-        // console.log('  - SITUAÇÃO: %s ', resultado);
-        // console.log('  - QUANTIDADE DE PASSOS: %d PASSOS ', robo.getQtdPassos());
     }
 }
