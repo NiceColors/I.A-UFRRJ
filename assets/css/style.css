@@ -23,7 +23,7 @@ body {
     right: 0;
     width: 10px;
     height: 10px;
-    transition: all 200ms ease-in-out;
+    transition: all 200ms linear, transform 100ms linear;
 }
 
 #matriz {

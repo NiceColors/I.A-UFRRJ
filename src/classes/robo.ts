@@ -10,6 +10,9 @@ export class Robo {
     private locaisParaVisitar: Array<Celula> = new Array();
     private trajeto: Array<Array<number>> = new Array();
 
+    private readonly DELAY_MOVIMENTO = 200;
+    private readonly DELAY_ROTACAO = 100;
+
     constructor(
         private posL: number,
         private posC: number,
@@ -96,11 +99,11 @@ export class Robo {
         this.roboRef.style.top = `${roboTop + 5}px`;
         this.roboRef.style.left = `${roboLeft + 5}px`;
 
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise(resolve => setTimeout(resolve, this.DELAY_MOVIMENTO));
     }
 
     // Função que gira o robô para a posicao de uma nova celula considerando diagonal
-    private girarParaNovaCelula(celula: Celula) {
+    private girarParaNovaCelula(celula: Celula): Promise<void> {
         // Calcula a diferença entre a posição atual e a nova posição
         const diferencaL = celula.linha - this.posL;
         const diferencaC = celula.coluna - this.posC;
@@ -132,7 +135,8 @@ export class Robo {
             }
         }
 
-        console.log(`Posição atual: ${this.posL}, ${this.posC}, posição que devo ir: ${celula.linha}, ${celula.coluna}`);
-        console.log(`Direção atual: ${this.direcao}, direção que devo girar: ${direcaoGirar}`);
+        this.roboRef.style.transform = `rotate(${direcaoGirar}deg)`;
+
+        return new Promise(resolve => setTimeout(resolve, this.DELAY_ROTACAO));
     }
 }
