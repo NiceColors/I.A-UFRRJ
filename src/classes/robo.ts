@@ -84,6 +84,7 @@ export class Robo {
     }
 
     private async movimentar(celula: Celula) {
+        this.girarParaNovaCelula(celula);
         this.qtdPassos++;
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Vazia);
         this.posL = celula.linha;
@@ -96,5 +97,42 @@ export class Robo {
         this.roboRef.style.left = `${roboLeft + 5}px`;
 
         await new Promise(resolve => setTimeout(resolve, 200));
+    }
+
+    // Função que gira o robô para a posicao de uma nova celula considerando diagonal
+    private girarParaNovaCelula(celula: Celula) {
+        // Calcula a diferença entre a posição atual e a nova posição
+        const diferencaL = celula.linha - this.posL;
+        const diferencaC = celula.coluna - this.posC;
+        
+        // Para a direção que devo girar
+        let direcaoGirar: Direcao;
+
+        if (diferencaL === 0) {
+            if (diferencaC > 0) {
+                direcaoGirar = Direcao.Direita;
+            } else {
+                direcaoGirar = Direcao.Esquerda;
+            }
+        } else if (diferencaL > 0) {
+            if (diferencaC === 0) {
+                direcaoGirar = Direcao.Baixo;
+            } else if (diferencaC > 0) {
+                direcaoGirar = Direcao.DireitaBaixo;
+            } else {
+                direcaoGirar = Direcao.EsquerdaBaixo;
+            }
+        } else {
+            if (diferencaC === 0) {
+                direcaoGirar = Direcao.Cima;
+            } else if (diferencaC > 0) {
+                direcaoGirar = Direcao.DireitaCima;
+            } else {
+                direcaoGirar = Direcao.EsquerdaCima;
+            }
+        }
+
+        console.log(`Posição atual: ${this.posL}, ${this.posC}, posição que devo ir: ${celula.linha}, ${celula.coluna}`);
+        console.log(`Direção atual: ${this.direcao}, direção que devo girar: ${direcaoGirar}`);
     }
 }
