@@ -5,6 +5,7 @@ import { Celula } from "./celula";
 import { Mapa } from './mapa'
 
 export class Robo {
+    private roboRef: HTMLElement
     private qtdPassos = 0;
     private locaisParaVisitar: Array<Celula> = new Array();
     private trajeto: Array<Array<number>> = new Array();
@@ -14,8 +15,15 @@ export class Robo {
         private posC: number,
         private direcao: Direcao,
         private limiteDePassos: number,
-        private mapa: Mapa
-    ) {}
+        private mapa: Mapa,
+        elementoRaiz: HTMLElement
+    ) {
+        this.roboRef = elementoRaiz.querySelector('#robo');
+
+        const [largura, altura] = mapa.getTamanhoCelula();
+        this.roboRef.style.width = `${Math.max(5, largura - 10)}px`;
+        this.roboRef.style.height = `${Math.max(5, altura - 10)}px`;
+    }
 
     public getQtdPassos() {
         return this.qtdPassos;
