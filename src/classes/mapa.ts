@@ -2,14 +2,17 @@ import { EstadoCelula } from "../enums/estado-celula";
 import { Celula } from "./celula";
 
 export class Mapa {
-    private readonly qtdLinhas: number;
-    private readonly qtdColunas: number;
     private matriz: Array<Array<EstadoCelula>> = [];
     public posicaoMeta: Array<number> = [];
 
-    constructor(linhas: number, colunas: number) {
-        this.qtdLinhas = linhas;
-        this.qtdColunas = colunas;
+    private elementRef: HTMLElement
+
+    constructor(
+        private readonly qtdLinhas: number,
+        private readonly qtdColunas: number,
+        elementoRaiz: HTMLElement
+    ) {
+        this.elementRef = elementoRaiz.querySelector('#matriz');
         this.criarMatriz();
     }
 
