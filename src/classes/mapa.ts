@@ -79,40 +79,40 @@ export class Mapa {
     public consultaVizinhos(celula: Celula) {
         const vizinhos: Array<Celula> = new Array();
 
-        // // Cima esquerda
-        // if ((l - 1) >= 0 && (c - 1) >= 0 && this.matriz[l - 1][c - 1] !== EstadoCelula.Obstaculo) {
-        //     vizinhos.push([l - 1, c - 1]);
-        // }
+        // Cima esquerda
+        if ((celula.linha - 1) >= 0 && (celula.coluna - 1) >= 0 && this.matriz[celula.linha - 1][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push(new Celula(celula.linha - 1, celula.coluna - 1, celula));
+        }
 
         // Esquerda
         if ((celula.coluna - 1) >= 0 && this.matriz[celula.linha][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha, celula.coluna - 1, celula));
         }
 
-        // // Baixo esquerda
-        // if ((l + 1) < this.qtdLinhas && (c - 1) >= 0 && this.matriz[l + 1][c - 1] !== EstadoCelula.Obstaculo) {
-        //     vizinhos.push([l + 1, c - 1]);
-        // }
+        // Baixo esquerda
+        if ((celula.linha + 1) < this.qtdLinhas && (celula.coluna - 1) >= 0 && this.matriz[celula.linha + 1][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push(new Celula(celula.linha + 1, celula.coluna - 1, celula));
+        }
 
         // Baixo
         if ((celula.linha + 1) < this.qtdLinhas && this.matriz[celula.linha + 1][celula.coluna] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha + 1, celula.coluna, celula));
         }
 
-        // // Baixo direita
-        // if ((l + 1) < this.qtdLinhas && (c + 1) < this.qtdColunas && this.matriz[l + 1][c + 1] !== EstadoCelula.Obstaculo) {
-        //     vizinhos.push([l + 1, c + 1]);
-        // }
+        // Baixo direita
+        if ((celula.linha + 1) < this.qtdLinhas && (celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha + 1][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push(new Celula(celula.linha + 1, celula.coluna + 1, celula));
+        }
         
         // Direita
         if ((celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha, celula.coluna + 1, celula));
         }
         
-        // // Cima direita
-        // if ((l - 1) >= 0 && (c + 1) < this.qtdColunas && this.matriz[l - 1][c + 1] !== EstadoCelula.Obstaculo) {
-        //     vizinhos.push([l - 1, c + 1]);
-        // }
+        // Cima direita
+        if ((celula.linha - 1) >= 0 && (celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha - 1][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
+            vizinhos.push(new Celula(celula.linha - 1, celula.coluna + 1, celula));
+        }
 
         // Cima
         if ((celula.linha - 1) >= 0 && this.matriz[celula.linha - 1][celula.coluna] !== EstadoCelula.Obstaculo) {
