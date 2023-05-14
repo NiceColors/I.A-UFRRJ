@@ -38,6 +38,18 @@ export class Mapa {
         }
     }
 
+    public getTamanhoCelula() {
+        const celula = this.mapaRef.querySelector(`.celula`);
+        const detalhesElemento = celula.getBoundingClientRect();
+        return [detalhesElemento.width, detalhesElemento.height];
+    }
+
+    public getPosicaoElementoCelulaRobo() {
+        const elementoCelula = this.mapaRef.querySelector(`.celula[data-type="${EstadoCelula.Robo}"]`);
+        const posicao = elementoCelula.getBoundingClientRect();
+        return [posicao.top, posicao.left];
+    }
+    
     public posicionarRobo(l: number, c: number) {
         this.setCelula(l, c, EstadoCelula.Robo);
     }
