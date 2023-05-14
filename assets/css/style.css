@@ -17,6 +17,15 @@ body {
     height: 100vh;
 }
 
+#robo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    transition: all 200ms ease-in-out;
+}
+
 #matriz {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -52,7 +61,7 @@ body {
 }
 
 #matriz .celula[data-type="@"] {
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
 }
 
 #matriz .celula[data-type="!"] {
