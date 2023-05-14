@@ -17,18 +17,13 @@ export class Mapa {
     }
 
     private criarMatriz() {
+        this.elementRef.innerHTML = '';
+        
         for (let l = 0; l < this.qtdLinhas; l++) {
             this.matriz[l] = new Array<EstadoCelula>();
             for (let c = 0; c < this.qtdColunas; c++) {
                 this.matriz[l][c] = EstadoCelula.Vazia;
-            }
-        }
 
-        const matrizHtml = document.getElementById('matriz');
-        matrizHtml.innerHTML = '';
-
-        for (let l = 0; l < this.qtdLinhas; l++) {
-            for (let c = 0; c < this.qtdColunas; c++) {
                 let celula = this.matriz[l][c];
 
                 const divCelula = document.createElement('div');
@@ -37,10 +32,9 @@ export class Mapa {
                 divCelula.setAttribute('data-coluna', c.toString());
                 divCelula.setAttribute('data-type', celula);
 
-                matrizHtml.appendChild(divCelula);
-
-                matrizHtml.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
-                matrizHtml.style.gridTemplateRows = `repeat(${this.qtdLinhas}, 1fr)`;
+                this.elementRef.appendChild(divCelula);
+                this.elementRef.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
+                this.elementRef.style.gridTemplateRows = `repeat(${this.qtdLinhas}, 1fr)`;
             }
         }
     }
