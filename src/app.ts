@@ -22,7 +22,7 @@ export class App {
     }
 
     public async run() {
-        const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Baixo, this.LIMITE_DE_PASSOS, this.mapa);
+        const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Baixo, this.LIMITE_DE_PASSOS, this.mapa, this.elementRef);
 
         this.mapa.posicionarRobo(this.POS_L_ROBO, this.POS_C_ROBO);
 
