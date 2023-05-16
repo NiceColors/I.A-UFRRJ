@@ -30,6 +30,7 @@ export class Mapa {
                 divCelula.setAttribute('data-linha', l.toString());
                 divCelula.setAttribute('data-coluna', c.toString());
                 divCelula.setAttribute('data-type', celula);
+                divCelula.setAttribute('title', `Linha: ${l} | Coluna: ${c}`);
 
                 this.mapaRef.appendChild(divCelula);
                 this.mapaRef.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
