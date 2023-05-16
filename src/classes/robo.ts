@@ -40,11 +40,6 @@ export class Robo {
 
             await this.movimentar(celula);
 
-            if (this.mapa.metaEncontrada(this.posL, this.posC)) {
-                this.mapa.setCelula(this.posL, this.posC, EstadoCelula.MetaEncontrada);
-                return SituacaoBusca.MetaEncontrada;
-            }
-
             let metaEncontrada = this.mapa.verificarMetaEncontrada(celula);
             await this.movimentar(celula, metaEncontrada);
             this.trajeto.push([this.posL, this.posC]);

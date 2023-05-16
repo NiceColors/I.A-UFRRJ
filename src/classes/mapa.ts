@@ -137,8 +137,6 @@ export class Mapa {
         return this.posicaoMeta[0] === celula.linha && this.posicaoMeta[1] === celula.coluna;
     }
 
-    }
-
     // private frames = 0;
     // public imprimirDebug() {
     //     this.frames++;
