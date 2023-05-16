@@ -120,34 +120,32 @@ export class Robo {
         const diferencaL = celula.linha - this.posL;
         const diferencaC = celula.coluna - this.posC;
         
-        // Para a direção que devo girar
-        let direcaoGirar: Direcao;
-
         if (diferencaL === 0) {
             if (diferencaC > 0) {
-                direcaoGirar = Direcao.Direita;
+                this.direcao = Direcao.Direita;
+                this.direcao = Direcao.Direita;
             } else {
-                direcaoGirar = Direcao.Esquerda;
+                this.direcao = Direcao.Esquerda;
             }
         } else if (diferencaL > 0) {
             if (diferencaC === 0) {
-                direcaoGirar = Direcao.Baixo;
+                this.direcao = Direcao.Baixo;
             } else if (diferencaC > 0) {
-                direcaoGirar = Direcao.DireitaBaixo;
+                this.direcao = Direcao.DireitaBaixo;
             } else {
-                direcaoGirar = Direcao.EsquerdaBaixo;
+                this.direcao = Direcao.EsquerdaBaixo;
             }
         } else {
             if (diferencaC === 0) {
-                direcaoGirar = Direcao.Cima;
+                this.direcao = Direcao.Cima;
             } else if (diferencaC > 0) {
-                direcaoGirar = Direcao.DireitaCima;
+                this.direcao = Direcao.DireitaCima;
             } else {
-                direcaoGirar = Direcao.EsquerdaCima;
+                this.direcao = Direcao.EsquerdaCima;
             }
         }
 
-        this.roboRef.style.transform = `rotate(${direcaoGirar}deg)`;
+        this.roboRef.style.transform = `rotate(${this.direcao}deg)`;
 
         return new Promise(resolve => setTimeout(resolve, this.DELAY_ROTACAO));
     }
