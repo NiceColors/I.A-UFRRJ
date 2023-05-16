@@ -46,7 +46,12 @@ export class Mapa {
     }
 
     public getPosicaoElementoCelulaRobo() {
-        const elementoCelula = this.mapaRef.querySelector(`.celula[data-type="${EstadoCelula.Robo}"]`);
+        let elementoCelula = this.mapaRef.querySelector(`.celula[data-type="${EstadoCelula.Robo}"]`);
+        
+        if (!elementoCelula) {
+            elementoCelula = this.mapaRef.querySelector(`.celula[data-type="${EstadoCelula.MetaEncontrada}"]`);
+        } 
+
         const posicao = elementoCelula.getBoundingClientRect();
         return [posicao.top, posicao.left];
     }
@@ -128,8 +133,10 @@ export class Mapa {
         this.mapaRef.querySelector(`.celula[data-linha="${l}"][data-coluna="${c}"]`).setAttribute('data-type', estado);
     }
 
-    public metaEncontrada(l: number, c: number) {
-        return this.posicaoMeta[0] === l && this.posicaoMeta[1] === c;
+    public verificarMetaEncontrada(celula: Celula) {
+        return this.posicaoMeta[0] === celula.linha && this.posicaoMeta[1] === celula.coluna;
+    }
+
     }
 
     // private frames = 0;

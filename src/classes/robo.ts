@@ -45,7 +45,13 @@ export class Robo {
                 return SituacaoBusca.MetaEncontrada;
             }
 
+            let metaEncontrada = this.mapa.verificarMetaEncontrada(celula);
+            await this.movimentar(celula, metaEncontrada);
             this.trajeto.push([this.posL, this.posC]);
+
+            if (metaEncontrada) {
+                return SituacaoBusca.MetaEncontrada;
+            }
 
             const vizinhos = this.mapa.consultaVizinhos(celula);
             for (let i = 0; i < vizinhos.length; i++) {
@@ -86,13 +92,19 @@ export class Robo {
         return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
 
-    private async movimentar(celula: Celula) {
+    private async movimentar(celula: Celula, metaEncontrada = false) {
         await this.girarParaNovaCelula(celula);
         this.qtdPassos++;
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Vazia);
         this.posL = celula.linha;
         this.posC = celula.coluna;
+        
+        if (metaEncontrada) {
+            this.mapa.setCelula(this.posL, this.posC, EstadoCelula.MetaEncontrada);
+        } else {
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
+        }
+        
         celula.receberVisita();
 
         const [roboTop, roboLeft] = this.mapa.getPosicaoElementoCelulaRobo();
