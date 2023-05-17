@@ -1,9 +1,9 @@
 import { EstadoCelula } from "../enums/estado-celula";
+import { SituacaoCelula } from "../enums/situacao-celula";
 
 export class Celula {
     public filhos: Array<Celula> = [];
-    public visitado = false;
-    public fechado = false;
+    public situacao = SituacaoCelula.AguardandoVisita;
     public estado: EstadoCelula = EstadoCelula.Vazia;
     
     constructor(
@@ -12,9 +12,20 @@ export class Celula {
         public readonly pai: Celula | null = null
     ) {}
 
+    private recebeuVisita() {
+        return this.situacao === SituacaoCelula.Visitado || this.situacao === SituacaoCelula.Fechado;
+    }
+
+    private verificaSeDeveFechar() {
+        return this.filhos.every(filho => filho.recebeuVisita());
+    }
+        
     public receberVisita() {
-        this.visitado = true;
-        this.fechado = this.filhos.every(filho => filho.visitado);
+        if (this.verificaSeDeveFechar()) {
+            this.situacao = SituacaoCelula.Fechado;
+        } else {
+            this.situacao = SituacaoCelula.Visitado;
+        }
     }
 
     public atribuirFilho(filho: Celula) {

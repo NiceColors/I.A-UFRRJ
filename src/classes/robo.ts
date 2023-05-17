@@ -1,6 +1,7 @@
 import { Direcao } from "../enums/direcao";
 import { EstadoCelula } from "../enums/estado-celula";
 import { SituacaoBusca } from "../enums/situacao-busca";
+import { SituacaoCelula } from "../enums/situacao-celula";
 import { Celula } from "./celula";
 import { Mapa } from './mapa'
 
@@ -65,7 +66,7 @@ export class Robo {
                 while (celulaTemporaria !== null) {
                     await this.movimentar(celulaTemporaria);
 
-                    if (!celulaTemporaria.fechado) {
+                    if (celulaTemporaria.situacao !== SituacaoCelula.Fechado) {
                         break;
                     }
 
@@ -105,15 +106,15 @@ export class Robo {
         if (metaEncontrada) {
             this.mapa.setCelula(this.posL, this.posC, EstadoCelula.MetaEncontrada);
         } else {
-        this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
+            this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
         }
         
         celula.receberVisita();
-
+        
         const [roboTop, roboLeft] = this.mapa.getPosicaoElementoCelulaRobo();
         this.roboRef.style.top = `${roboTop + 5}px`;
         this.roboRef.style.left = `${roboLeft + 5}px`;
-
+        
         await new Promise(resolve => setTimeout(resolve, this.DELAY_MOVIMENTO));
     }
 
@@ -123,7 +124,7 @@ export class Robo {
         const diferencaL = celula.linha - this.posL;
         const diferencaC = celula.coluna - this.posC;
         const direcaoAtual = this.direcao;
-        
+
         if (diferencaL === 0) {
             if (diferencaC > 0) {
                 this.direcao = Direcao.Direita;
