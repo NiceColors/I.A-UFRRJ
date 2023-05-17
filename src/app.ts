@@ -22,7 +22,7 @@ export class App {
     }
 
     public async run() {
-        const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Cima, this.LIMITE_DE_PASSOS, this.mapa, this.elementRef);
+        const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Esquerda, this.LIMITE_DE_PASSOS, this.mapa, this.elementRef);
 
         this.mapa.posicionarRobo(this.POS_L_ROBO, this.POS_C_ROBO);
 
@@ -35,13 +35,12 @@ export class App {
         const resultado: Promise<SituacaoBusca> = robo.buscaEmProfundidade();
 
         this.imprimeResultado(await resultado, robo);
-
     }
 
     private imprimeResultado(resultado: SituacaoBusca, robo: Robo) {
         alert(`RESULTADO
-               \n  - SITUAÇÃO: ${resultado}
-               \n  - QUANTIDADE DE PASSOS: ${robo.getQtdPassos()} PASSOS`
+                \n  - SITUAÇÃO: ${resultado}
+                \n  - QUANTIDADE DE PASSOS: ${robo.getQtdPassos()} PASSOS`
         );
     }
 }

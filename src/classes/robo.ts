@@ -10,6 +10,7 @@ export class Robo {
     private locaisParaVisitar: Array<Celula> = new Array();
     private trajeto: Array<Array<number>> = new Array();
 
+    private readonly STEP_GIRO = 45;
     private readonly DELAY_MOVIMENTO = 200;
     private readonly DELAY_ROTACAO = 100;
 
@@ -36,9 +37,7 @@ export class Robo {
         this.locaisParaVisitar.push(new Celula(this.posL, this.posC));
 
         while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
-            const celula = this.locaisParaVisitar.pop();
-
-            await this.movimentar(celula);
+            let celula = this.locaisParaVisitar.pop();
 
             let metaEncontrada = this.mapa.verificarMetaEncontrada(celula);
             await this.movimentar(celula, metaEncontrada);
@@ -51,15 +50,10 @@ export class Robo {
             const vizinhos = this.mapa.consultaVizinhos(celula);
             for (let i = 0; i < vizinhos.length; i++) {
                 const vizinho = vizinhos[i];
-                const localExplorado = this.trajeto.some((v) => {
-                    return v[0] === vizinho.linha && v[1] === vizinho.coluna;
-                });
+                const localExplorado = this.verificaSeJaFoiExplorado(vizinho.linha, vizinho.coluna);
+                const localParaVisitar = this.verificaSeJaEstaNaLista(vizinho.linha, vizinho.coluna);
 
-                const localJaSeraVisitado = this.locaisParaVisitar.some((v) => {
-                    return v.linha === vizinho.linha && v.coluna === vizinho.coluna;
-                });
-
-                if (localExplorado || localJaSeraVisitado) {
+                if (localExplorado || localParaVisitar) {
                     vizinhos.splice(i, 1);
                     i--;
                 }
@@ -67,6 +61,7 @@ export class Robo {
             
             if (vizinhos.length === 0) {
                 let celulaTemporaria = celula.pai;
+
                 while (celulaTemporaria !== null) {
                     await this.movimentar(celulaTemporaria);
 
@@ -82,14 +77,27 @@ export class Robo {
                     celula.atribuirFilho(vizinho);
                 }
             }
+            
+            this.qtdPassos++;
         }
 
         return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
 
+    private verificaSeJaFoiExplorado(linha: number, coluna: number) {
+        return this.trajeto.some((c) => {
+            return c[0] === linha && c[1] === coluna;
+        });
+    }
+
+    private verificaSeJaEstaNaLista(linha: number, coluna: number) {
+        return this.locaisParaVisitar.some((c) => {
+            return c.linha === linha && c.coluna === coluna;
+        });
+    }
+
     private async movimentar(celula: Celula, metaEncontrada = false) {
         await this.girarParaNovaCelula(celula);
-        this.qtdPassos++;
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Vazia);
         this.posL = celula.linha;
         this.posC = celula.coluna;
@@ -114,10 +122,10 @@ export class Robo {
         // Calcula a diferença entre a posição atual e a nova posição
         const diferencaL = celula.linha - this.posL;
         const diferencaC = celula.coluna - this.posC;
+        const direcaoAtual = this.direcao;
         
         if (diferencaL === 0) {
             if (diferencaC > 0) {
-                this.direcao = Direcao.Direita;
                 this.direcao = Direcao.Direita;
             } else {
                 this.direcao = Direcao.Esquerda;

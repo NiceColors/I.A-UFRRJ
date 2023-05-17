@@ -31,7 +31,7 @@ export class Mapa {
                 divCelula.setAttribute('data-coluna', c.toString());
                 divCelula.setAttribute('data-type', celula);
                 divCelula.setAttribute('title', `Linha: ${l} | Coluna: ${c}`);
-
+                
                 this.mapaRef.appendChild(divCelula);
                 this.mapaRef.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
                 this.mapaRef.style.gridTemplateRows = `repeat(${this.qtdLinhas}, 1fr)`;
@@ -89,7 +89,7 @@ export class Mapa {
         if ((celula.linha - 1) >= 0 && (celula.coluna - 1) >= 0 && this.matriz[celula.linha - 1][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha - 1, celula.coluna - 1, celula));
         }
-
+        
         // Esquerda
         if ((celula.coluna - 1) >= 0 && this.matriz[celula.linha][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha, celula.coluna - 1, celula));
@@ -99,7 +99,7 @@ export class Mapa {
         if ((celula.linha + 1) < this.qtdLinhas && (celula.coluna - 1) >= 0 && this.matriz[celula.linha + 1][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha + 1, celula.coluna - 1, celula));
         }
-
+        
         // Baixo
         if ((celula.linha + 1) < this.qtdLinhas && this.matriz[celula.linha + 1][celula.coluna] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha + 1, celula.coluna, celula));
@@ -119,7 +119,7 @@ export class Mapa {
         if ((celula.linha - 1) >= 0 && (celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha - 1][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha - 1, celula.coluna + 1, celula));
         }
-
+        
         // Cima
         if ((celula.linha - 1) >= 0 && this.matriz[celula.linha - 1][celula.coluna] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha - 1, celula.coluna, celula));
@@ -137,17 +137,4 @@ export class Mapa {
         return this.posicaoMeta[0] === celula.linha && this.posicaoMeta[1] === celula.coluna;
     }
 
-    // private frames = 0;
-    // public imprimirDebug() {
-    //     this.frames++;
-    //     console.log('\nFRAME %d', this.frames);
-    //     for (let l = 0; l < this.qtdLinhas; l++) {
-    //         let string = '|';
-    //         for (let c = 0; c < this.qtdColunas; c++) {
-    //             string += this.matriz[l][c];
-    //         }
-    //         console.log(string + '|');
-    //     }
-    //     console.log('-------');
-    // }
 }
