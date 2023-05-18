@@ -2,14 +2,14 @@ import { EstadoCelula } from "../enums/estado-celula";
 import { SituacaoCelula } from "../enums/situacao-celula";
 
 export class Celula {
-    public filhos: Array<Celula> = [];
+    public ramos: Array<Celula> = [];
     public situacao = SituacaoCelula.AguardandoVisita;
     public estado: EstadoCelula = EstadoCelula.Vazia;
     
     constructor(
         public readonly linha: number,
         public readonly coluna: number,
-        public readonly pai: Celula | null = null
+        public readonly raiz: Celula | null = null
     ) {}
 
     private recebeuVisita() {
@@ -17,7 +17,7 @@ export class Celula {
     }
 
     private verificaSeDeveFechar() {
-        return this.filhos.every(filho => filho.recebeuVisita());
+        return this.ramos.every(ramo => ramo.recebeuVisita());
     }
         
     public receberVisita() {
@@ -28,7 +28,7 @@ export class Celula {
         }
     }
 
-    public atribuirFilho(filho: Celula) {
-        this.filhos.push(filho);
+    public atribuirRamo(ramo: Celula) {
+        this.ramos.push(ramo);
     }
 }

@@ -61,7 +61,7 @@ export class Robo {
             }
             
             if (vizinhos.length === 0) {
-                let celulaTemporaria = celula.pai;
+                let celulaTemporaria = celula.raiz;
 
                 while (celulaTemporaria !== null) {
                     await this.movimentar(celulaTemporaria);
@@ -70,12 +70,12 @@ export class Robo {
                         break;
                     }
 
-                    celulaTemporaria = celulaTemporaria.pai;
+                    celulaTemporaria = celulaTemporaria.raiz;
                 }
             } else {
                 for (const vizinho of vizinhos) {
                     this.locaisParaVisitar.push(vizinho);
-                    celula.atribuirFilho(vizinho);
+                    celula.atribuirRamo(vizinho);
                 }
             }
             
