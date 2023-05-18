@@ -1,9 +1,9 @@
-import { EstadoCelula } from "../enums/estado-celula";
 import { Celula } from "./celula";
+import { EstadoCelula } from "../enums/estado-celula";
 
 export class Mapa {
     private mapaRef: HTMLElement
-    private matriz: Array<Array<EstadoCelula>> = [];
+    public matriz: Array<Array<EstadoCelula>> = [];
     public posicaoMeta: Array<number> = [];
 
     constructor(
@@ -17,7 +17,7 @@ export class Mapa {
 
     private criarMatriz() {
         this.mapaRef.innerHTML = '';
-        
+
         for (let l = 0; l < this.qtdLinhas; l++) {
             this.matriz[l] = new Array<EstadoCelula>();
             for (let c = 0; c < this.qtdColunas; c++) {
@@ -31,7 +31,7 @@ export class Mapa {
                 divCelula.setAttribute('data-coluna', c.toString());
                 divCelula.setAttribute('data-type', celula);
                 divCelula.setAttribute('title', `Linha: ${l} | Coluna: ${c}`);
-                
+
                 this.mapaRef.appendChild(divCelula);
                 this.mapaRef.style.gridTemplateColumns = `repeat(${this.qtdColunas}, 1fr)`;
                 this.mapaRef.style.gridTemplateRows = `repeat(${this.qtdLinhas}, 1fr)`;
@@ -47,15 +47,15 @@ export class Mapa {
 
     public getPosicaoElementoCelulaRobo() {
         let elementoCelula = this.mapaRef.querySelector(`.celula[data-type="${EstadoCelula.Robo}"]`);
-        
+
         if (!elementoCelula) {
             elementoCelula = this.mapaRef.querySelector(`.celula[data-type="${EstadoCelula.MetaEncontrada}"]`);
-        } 
+        }
 
         const posicao = elementoCelula.getBoundingClientRect();
         return [posicao.top, posicao.left];
     }
-    
+
     public posicionarRobo(l: number, c: number) {
         this.setCelula(l, c, EstadoCelula.Robo);
     }
@@ -82,6 +82,9 @@ export class Mapa {
         } while (qtdObstaculos !== qtdObstaculosInseridos);
     }
 
+
+
+
     public consultaVizinhos(celula: Celula) {
         const vizinhos: Array<Celula> = new Array();
 
@@ -89,7 +92,7 @@ export class Mapa {
         if ((celula.linha - 1) >= 0 && (celula.coluna - 1) >= 0 && this.matriz[celula.linha - 1][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha - 1, celula.coluna - 1, celula));
         }
-        
+
         // Esquerda
         if ((celula.coluna - 1) >= 0 && this.matriz[celula.linha][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha, celula.coluna - 1, celula));
@@ -99,7 +102,7 @@ export class Mapa {
         if ((celula.linha + 1) < this.qtdLinhas && (celula.coluna - 1) >= 0 && this.matriz[celula.linha + 1][celula.coluna - 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha + 1, celula.coluna - 1, celula));
         }
-        
+
         // Baixo
         if ((celula.linha + 1) < this.qtdLinhas && this.matriz[celula.linha + 1][celula.coluna] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha + 1, celula.coluna, celula));
@@ -109,17 +112,17 @@ export class Mapa {
         if ((celula.linha + 1) < this.qtdLinhas && (celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha + 1][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha + 1, celula.coluna + 1, celula));
         }
-        
+
         // Direita
         if ((celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha, celula.coluna + 1, celula));
         }
-        
+
         // Cima direita
         if ((celula.linha - 1) >= 0 && (celula.coluna + 1) < this.qtdColunas && this.matriz[celula.linha - 1][celula.coluna + 1] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha - 1, celula.coluna + 1, celula));
         }
-        
+
         // Cima
         if ((celula.linha - 1) >= 0 && this.matriz[celula.linha - 1][celula.coluna] !== EstadoCelula.Obstaculo) {
             vizinhos.push(new Celula(celula.linha - 1, celula.coluna, celula));

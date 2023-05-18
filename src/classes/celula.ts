@@ -5,12 +5,13 @@ export class Celula {
     public ramos: Array<Celula> = [];
     public situacao = SituacaoCelula.AguardandoVisita;
     public estado: EstadoCelula = EstadoCelula.Vazia;
-    
+
     constructor(
         public readonly linha: number,
         public readonly coluna: number,
-        public readonly raiz: Celula | null = null
-    ) {}
+        public readonly raiz: Celula | null = null,
+        public custo = 0
+    ) { }
 
     private recebeuVisita() {
         return this.situacao === SituacaoCelula.Visitado || this.situacao === SituacaoCelula.Fechado;
@@ -19,7 +20,7 @@ export class Celula {
     private verificaSeDeveFechar() {
         return this.ramos.every(ramo => ramo.recebeuVisita());
     }
-        
+
     public receberVisita() {
         if (this.verificaSeDeveFechar()) {
             this.situacao = SituacaoCelula.Fechado;

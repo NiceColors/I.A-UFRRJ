@@ -1,9 +1,9 @@
+import { Celula } from "./celula";
 import { Direcao } from "../enums/direcao";
 import { EstadoCelula } from "../enums/estado-celula";
+import { Mapa } from './mapa'
 import { SituacaoBusca } from "../enums/situacao-busca";
 import { SituacaoCelula } from "../enums/situacao-celula";
-import { Celula } from "./celula";
-import { Mapa } from './mapa'
 
 export class Robo {
     private roboRef: HTMLElement
@@ -59,7 +59,7 @@ export class Robo {
                     i--;
                 }
             }
-            
+
             if (vizinhos.length === 0) {
                 let celulaTemporaria = celula.raiz;
 
@@ -78,12 +78,75 @@ export class Robo {
                     celula.atribuirRamo(vizinho);
                 }
             }
-            
+
             this.qtdPassos++;
         }
 
         return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
+
+    private obterCelulaMenorCusto(): Celula {
+        let menorCustoCelula = this.locaisParaVisitar[0];
+        for (let i = 1; i < this.locaisParaVisitar.length; i++) {
+            const celula = this.locaisParaVisitar[i];
+            if (celula.custo < menorCustoCelula.custo) {
+                menorCustoCelula = celula;
+            }
+        }
+        return menorCustoCelula;
+    }
+
+
+
+    public async buscaEstrela(): Promise<SituacaoBusca> {
+
+
+        const meta = {
+            linha: this.mapa.posicaoMeta[0],
+            coluna: this.mapa.posicaoMeta[1]
+        };
+
+        if (!meta) {
+            return SituacaoBusca.MetaNaoEncontrada;
+        }
+
+        this.locaisParaVisitar.push(new Celula(this.posL, this.posC)); 
+
+        while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
+            let celula = this.obterCelulaMenorCusto();
+
+            if (celula.linha === meta.linha && celula.coluna === meta.coluna) {
+                return SituacaoBusca.MetaEncontrada;
+            }
+
+            await this.movimentar(celula);
+            this.trajeto.push([this.posL, this.posC]);
+
+            const vizinhos = this.mapa.consultaVizinhos(celula);
+            for (let i = 0; i < vizinhos.length; i++) {
+                const vizinho = vizinhos[i];
+                const localExplorado = this.verificaSeJaFoiExplorado(vizinho.linha, vizinho.coluna);
+                const localParaVisitar = this.verificaSeJaEstaNaLista(vizinho.linha, vizinho.coluna);
+
+                if (localExplorado || localParaVisitar) {
+                    vizinhos.splice(i, 1);
+                    i--;
+                }
+            }
+
+            for (const vizinho of vizinhos) {
+                const custo = celula.custo + 1;
+                vizinho.custo = custo; 
+                this.locaisParaVisitar.push(vizinho);
+                vizinho.atribuirRamo(celula); 
+            }
+
+            this.qtdPassos++;
+        }
+
+        return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
+    }
+
 
     private verificaSeJaFoiExplorado(linha: number, coluna: number) {
         return this.trajeto.some((c) => {
@@ -102,19 +165,19 @@ export class Robo {
         this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Vazia);
         this.posL = celula.linha;
         this.posC = celula.coluna;
-        
+
         if (metaEncontrada) {
             this.mapa.setCelula(this.posL, this.posC, EstadoCelula.MetaEncontrada);
         } else {
             this.mapa.setCelula(this.posL, this.posC, EstadoCelula.Robo);
         }
-        
+
         celula.receberVisita();
-        
+
         const [roboTop, roboLeft] = this.mapa.getPosicaoElementoCelulaRobo();
         this.roboRef.style.top = `${roboTop + 5}px`;
         this.roboRef.style.left = `${roboLeft + 5}px`;
-        
+
         await new Promise(resolve => setTimeout(resolve, this.DELAY_MOVIMENTO));
     }
 
