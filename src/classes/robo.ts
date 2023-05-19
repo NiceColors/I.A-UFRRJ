@@ -84,67 +84,99 @@ export class Robo {
 
         return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
+    public async buscaEstrela(): Promise<SituacaoBusca> {
+        const inicio = new Celula(this.posL, this.posC);
+        const fim = this.mapa.getMeta();
 
-    private obterCelulaMenorCusto(): Celula {
-        let menorCustoCelula = this.locaisParaVisitar[0];
-        for (let i = 1; i < this.locaisParaVisitar.length; i++) {
-            const celula = this.locaisParaVisitar[i];
-            if (celula.custo < menorCustoCelula.custo) {
+        const caminho = this.buscarCaminhoAStar(inicio, fim);
+
+        if (caminho) {
+            for (let i = 1; i < caminho.length; i++) {
+                const celula = caminho[i];
+                const metaEncontrada = this.mapa.verificarMetaEncontrada(celula);
+                await this.movimentar(celula, metaEncontrada);
+                this.trajeto.push([this.posL, this.posC]);
+
+                if (metaEncontrada) {
+                    return SituacaoBusca.MetaEncontrada;
+                }
+            }
+        }
+
+        return SituacaoBusca.MetaNaoEncontrada;
+    }
+
+
+    private obterCelulaMenorCusto(celulas: Celula[]): Celula {
+        let menorCustoCelula = celulas[0];
+        for (let i = 1; i < celulas.length; i++) {
+            const celula = celulas[i];
+            if (celula.custoF < menorCustoCelula.custoF) {
                 menorCustoCelula = celula;
             }
         }
         return menorCustoCelula;
     }
 
+    private construirCaminho(celula: Celula): Celula[] {
+        const caminho: Celula[] = [];
+        let celulaAtual: Celula | null = celula;
 
-
-    public async buscaEstrela(): Promise<SituacaoBusca> {
-
-
-        const meta = {
-            linha: this.mapa.posicaoMeta[0],
-            coluna: this.mapa.posicaoMeta[1]
-        };
-
-        if (!meta) {
-            return SituacaoBusca.MetaNaoEncontrada;
+        while (celulaAtual !== null) {
+            caminho.unshift(celulaAtual);
+            celulaAtual = celulaAtual.raiz;
         }
 
-        this.locaisParaVisitar.push(new Celula(this.posL, this.posC)); 
+        return caminho;
+    }
 
-        while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
-            let celula = this.obterCelulaMenorCusto();
+    private buscarCaminhoAStar(inicio: Celula, fim: Celula): Celula[] | null {
+        const abertos: Celula[] = [];
+        const fechados: Celula[] = [];
 
-            if (celula.linha === meta.linha && celula.coluna === meta.coluna) {
-                return SituacaoBusca.MetaEncontrada;
+        abertos.push(inicio);
+
+        while (abertos.length > 0) {
+            const nodoAtual = this.obterCelulaMenorCusto(abertos);
+
+            if (nodoAtual === fim) {
+                return this.construirCaminho(nodoAtual);
             }
 
-            await this.movimentar(celula);
-            this.trajeto.push([this.posL, this.posC]);
+            abertos.splice(abertos.indexOf(nodoAtual), 1);
+            fechados.push(nodoAtual);
 
-            const vizinhos = this.mapa.consultaVizinhos(celula);
-            for (let i = 0; i < vizinhos.length; i++) {
-                const vizinho = vizinhos[i];
-                const localExplorado = this.verificaSeJaFoiExplorado(vizinho.linha, vizinho.coluna);
-                const localParaVisitar = this.verificaSeJaEstaNaLista(vizinho.linha, vizinho.coluna);
+            const vizinhos = this.mapa.consultaVizinhosEstrela(nodoAtual);
+            for (const vizinho of vizinhos) {
+                if (fechados.includes(vizinho)) {
+                    continue;
+                }
 
-                if (localExplorado || localParaVisitar) {
-                    vizinhos.splice(i, 1);
-                    i--;
+                const custoG = nodoAtual.custoG + 1;
+                const custoH = this.calcularDistanciaManhattan(vizinho, fim);
+                const custoF = custoG + custoH;
+
+                if (!abertos.includes(vizinho) || custoF < vizinho.custoF) {
+                    vizinho.raiz = nodoAtual;
+                    vizinho.custoG = custoG;
+                    vizinho.custoH = custoH;
+                    vizinho.custoF = custoF;
+
+                    if (!abertos.includes(vizinho)) {
+                        abertos.push(vizinho);
+                    }
                 }
             }
-
-            for (const vizinho of vizinhos) {
-                const custo = celula.custo + 1;
-                vizinho.custo = custo; 
-                this.locaisParaVisitar.push(vizinho);
-                vizinho.atribuirRamo(celula); 
-            }
-
-            this.qtdPassos++;
         }
 
-        return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
+        return null;
+    }
+
+
+    private calcularDistanciaManhattan(celula1: Celula, celula2: Celula): number {
+        const dx = Math.abs(celula1.linha - celula2.linha);
+        const dy = Math.abs(celula1.coluna - celula2.coluna);
+        return dx + dy;
     }
 
 

@@ -6,14 +6,17 @@ export class Celula {
     public situacao = SituacaoCelula.AguardandoVisita;
     public estado: EstadoCelula = EstadoCelula.Vazia;
 
+    public custoG = 0; // custo acumulado desde o inicio até a célula
+    public custoH = 0; // custo do nó até até a meta
+    public custoF = 0; // custo total 
+
     constructor(
         public readonly linha: number,
         public readonly coluna: number,
-        public readonly raiz: Celula | null = null,
-        public custo = 0
+        public raiz: Celula | null = null
     ) { }
 
-    private recebeuVisita() {
+    public recebeuVisita() {
         return this.situacao === SituacaoCelula.Visitado || this.situacao === SituacaoCelula.Fechado;
     }
 

@@ -15,7 +15,7 @@ export class App {
     public readonly POS_C_META = Math.floor(Math.random() * this.COLUNAS);
 
     private mapa: Mapa;
-    
+
     constructor() {
         this.elementRef = document.querySelector('#app');
         this.mapa = new Mapa(this.LINHAS, this.COLUNAS, this.elementRef);
@@ -32,7 +32,7 @@ export class App {
         // TODO: VALIDAR PORCENTAGEM DE OBSTACULOS (DEVE ESTAR ENTRE O INTERVALO DE 20 A 60%)
         this.mapa.posicionarObstaculos();
 
-        const resultado: Promise<SituacaoBusca> = robo.buscaEmProfundidade();
+        const resultado: Promise<SituacaoBusca> = robo.buscaEstrela();
 
         this.imprimeResultado(await resultado, robo);
     }
