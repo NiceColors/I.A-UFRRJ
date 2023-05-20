@@ -41,11 +41,7 @@ header {
 
 /* disabled */
 
-.btn:disabled{
-    background-color: #fff;
-    color: #090909;
-    cursor: not-allowed;
-}
+
 
 select{
     background-color: #090909;

@@ -1,4 +1,5 @@
 import { Celula } from "./celula";
+import { Custo } from "../enums/custos";
 import { Direcao } from "../enums/direcao";
 import { EstadoCelula } from "../enums/estado-celula";
 import { Mapa } from './mapa'
@@ -8,6 +9,7 @@ import { SituacaoCelula } from "../enums/situacao-celula";
 export class Robo {
     private roboRef: HTMLElement
     private qtdPassos = 0;
+    private custoTotal = -1000
     private locaisParaVisitar: Array<Celula> = new Array();
     private trajeto: Array<Array<number>> = new Array();
 
@@ -133,7 +135,7 @@ export class Robo {
     }
 
     private obterCelulaMenorCusto(celulas: Celula[]): Celula {
-        return celulas.reduce((celulaMenor: Celula, celula: Celula) => 
+        return celulas.reduce((celulaMenor: Celula, celula: Celula) =>
             celula.custoF < celulaMenor.custoF ? celula : celulaMenor
         );
     }
@@ -228,6 +230,11 @@ export class Robo {
 
         this.posicionarElementoRobo();
 
+        const custoTotalHtml = document.getElementById('custo');
+
+        custoTotalHtml.innerHTML = this.custoTotal.toString();
+
+
         await new Promise(resolve => setTimeout(resolve, this.DELAY_MOVIMENTO));
     }
 
@@ -237,6 +244,9 @@ export class Robo {
         const diferencaL = celula.linha - this.posL;
         const diferencaC = celula.coluna - this.posC;
         const direcaoAtual = this.direcao;
+
+        const direcaoPrev = this.direcao
+
 
         if (diferencaL === 0) {
             if (diferencaC > 0) {
@@ -262,8 +272,17 @@ export class Robo {
             }
         }
 
+        const qtdGiros = Math.abs(direcaoAtual - this.direcao) / this.STEP_GIRO;
+
+        if (direcaoPrev !== this.direcao) {
+
+
+            this.custoTotal += Custo.FicarParado + Custo.Girar * qtdGiros;
+        }
+
+
         this.roboRef.style.transform = `rotate(${this.direcao}deg)`;
-    
+
         return new Promise(resolve => setTimeout(resolve, this.DELAY_ROTACAO));
     }
 }
