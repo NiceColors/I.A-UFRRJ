@@ -18,6 +18,15 @@ Criar um programa que simule uma inteligência artificial procurando por uma met
 
 - Por fim, abra o arquivo index.html
 
+### Exemplo do uso da Busca Estrela:
+
+<img src="https://github.com/NiceColors/I.A-UFRRJ/blob/main/example/BuscaEstrela.gif" />
+
+### Exemplo do uso da Busca em Profundidade:
+
+<img src="https://github.com/NiceColors/I.A-UFRRJ/blob/main/example/BuscaEmProfundidade.gif" />
+
+
 <strong>Linguagem</strong>
 - Typescript
 
