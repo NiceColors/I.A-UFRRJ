@@ -33,7 +33,7 @@ export class App {
         this.mapa.posicionarMeta(this.POS_L_META, this.POS_C_META);
         
 
-        // TODO: VALIDAR PORCENTAGEM DE OBSTACULOS (DEVE ESTAR ENTRE O INTERVALO DE 20 A 60%)
+        this.robo.posicionarElementoRobo();
         this.mapa.posicionarObstaculos();
 
         switch (algoritmoDeBusca) {

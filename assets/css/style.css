@@ -12,7 +12,6 @@ body {
     overflow: hidden;
 }
 
-
 header {
     display: flex;
     justify-content: space-between;
@@ -72,6 +71,7 @@ select{
 }
 
 #robo {
+    display: none;
     position: absolute;
     top: 0;
     right: 0;

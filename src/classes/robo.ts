@@ -36,14 +36,17 @@ export class Robo {
         return this.qtdPassos;
     }
 
+    public posicionarElementoRobo() {
+        const [roboTop, roboLeft] = this.mapa.getPosicaoElementoCelulaRobo();
+        this.roboRef.style.top = `${roboTop + 5}px`;
+        this.roboRef.style.left = `${roboLeft + 5}px`;
+    }
+
     public async buscaEmProfundidade(): Promise<SituacaoBusca> {
-
         this.comecarHtml.setAttribute('disabled', 'true');
-
+        this.roboRef.style.display = 'block';
 
         this.locaisParaVisitar.push(new Celula(this.posL, this.posC));
-
-
 
         while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
             let celula = this.locaisParaVisitar.pop();
@@ -55,7 +58,6 @@ export class Robo {
             this.trajeto.push([this.posL, this.posC]);
 
             if (metaEncontrada) {
-
                 this.comecarHtml.removeAttribute('disabled');
 
                 return SituacaoBusca.MetaEncontrada;
@@ -99,16 +101,15 @@ export class Robo {
 
         return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
+
     public async buscaEstrela(): Promise<SituacaoBusca> {
-
-
         this.comecarHtml.setAttribute('disabled', 'true');
+        this.roboRef.style.display = 'block';
 
         const inicio = new Celula(this.posL, this.posC);
         const fim = this.mapa.getMeta();
 
         const caminho = this.buscarCaminhoAStar(inicio, fim);
-
         if (caminho) {
             for (let i = 1; i < caminho.length; i++) {
                 const celula = caminho[i];
@@ -131,16 +132,10 @@ export class Robo {
         return SituacaoBusca.MetaNaoEncontrada;
     }
 
-
     private obterCelulaMenorCusto(celulas: Celula[]): Celula {
-        let menorCustoCelula = celulas[0];
-        for (let i = 1; i < celulas.length; i++) {
-            const celula = celulas[i];
-            if (celula.custoF < menorCustoCelula.custoF) {
-                menorCustoCelula = celula;
-            }
-        }
-        return menorCustoCelula;
+        return celulas.reduce((celulaMenor: Celula, celula: Celula) => 
+            celula.custoF < celulaMenor.custoF ? celula : celulaMenor
+        );
     }
 
     private construirCaminho(celula: Celula): Celula[] {
@@ -191,11 +186,7 @@ export class Robo {
                         abertos.push(vizinho);
                     }
                 }
-
-
             }
-
-
         }
 
         return null;
@@ -235,9 +226,7 @@ export class Robo {
 
         celula.receberVisita();
 
-        const [roboTop, roboLeft] = this.mapa.getPosicaoElementoCelulaRobo();
-        this.roboRef.style.top = `${roboTop + 5}px`;
-        this.roboRef.style.left = `${roboLeft + 5}px`;
+        this.posicionarElementoRobo();
 
         await new Promise(resolve => setTimeout(resolve, this.DELAY_MOVIMENTO));
     }
