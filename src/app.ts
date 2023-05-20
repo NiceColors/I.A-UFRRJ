@@ -22,7 +22,6 @@ export class App {
     }
 
     public async run(algoritmoDeBusca: string) {
-        
         this.mapa = new Mapa(this.LINHAS, this.COLUNAS, this.elementRef);
         
         const robo = new Robo(this.POS_L_ROBO, this.POS_C_ROBO, Direcao.Esquerda, this.LIMITE_DE_PASSOS, this.mapa, this.elementRef);
@@ -33,13 +32,10 @@ export class App {
         this.mapa.posicionarMeta(this.POS_L_META, this.POS_C_META);
         
 
-        this.robo.posicionarElementoRobo();
+        robo.posicionarElementoRobo();
         this.mapa.posicionarObstaculos();
 
         switch (algoritmoDeBusca) {
-            case 'Busca em Largura':
-                this.imprimeResultado(await robo.buscaEmProfundidade(), robo);
-                break;
             case 'Busca em Profundidade':
                 this.imprimeResultado(await robo.buscaEmProfundidade(), robo);
                 break;
@@ -48,11 +44,9 @@ export class App {
                 this.imprimeResultado(await robo.buscaEstrela(), robo);
                 break;
         }
-
     }
 
     private imprimeResultado(resultado: SituacaoBusca, robo: Robo) {
-
         const modal = document.getElementById("modal");
         const modalContent = document.querySelector(".modal-content");
 
@@ -63,7 +57,6 @@ export class App {
 
         modal.classList.add("show");
         modalContent.classList.add("show");
-
     }
 
 
