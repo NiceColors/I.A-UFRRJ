@@ -69,7 +69,7 @@ export class Mapa {
         this.posicaoMeta = [l, c];
     }
 
-    public posicionarObstaculos(percentual = 30) {
+    public posicionarObstaculos(percentual = 50) {
         const qtdCelulas = this.qtdLinhas * this.qtdColunas;
         const qtdObstaculos = Math.floor((qtdCelulas * percentual) / 100);
 
@@ -180,4 +180,5 @@ export class Mapa {
     public verificarMetaEncontrada(celula: Celula) {
         return this.posicaoMeta[0] === celula.linha && this.posicaoMeta[1] === celula.coluna;
     }
+
 }

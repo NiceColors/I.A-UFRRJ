@@ -15,6 +15,8 @@ export class Robo {
     private readonly DELAY_MOVIMENTO = 200;
     private readonly DELAY_ROTACAO = 100;
 
+    private comecarHtml = document.querySelector('#comecar');
+
     constructor(
         private posL: number,
         private posC: number,
@@ -35,16 +37,27 @@ export class Robo {
     }
 
     public async buscaEmProfundidade(): Promise<SituacaoBusca> {
+
+        this.comecarHtml.setAttribute('disabled', 'true');
+
+
         this.locaisParaVisitar.push(new Celula(this.posL, this.posC));
+
+
 
         while (this.locaisParaVisitar.length > 0 && this.qtdPassos < this.limiteDePassos) {
             let celula = this.locaisParaVisitar.pop();
 
             let metaEncontrada = this.mapa.verificarMetaEncontrada(celula);
             await this.movimentar(celula, metaEncontrada);
+            this.qtdPassos++;
+
             this.trajeto.push([this.posL, this.posC]);
 
             if (metaEncontrada) {
+
+                this.comecarHtml.removeAttribute('disabled');
+
                 return SituacaoBusca.MetaEncontrada;
             }
 
@@ -65,6 +78,7 @@ export class Robo {
 
                 while (celulaTemporaria !== null) {
                     await this.movimentar(celulaTemporaria);
+                    this.qtdPassos++;
 
                     if (celulaTemporaria.situacao !== SituacaoCelula.Fechado) {
                         break;
@@ -79,12 +93,17 @@ export class Robo {
                 }
             }
 
-            this.qtdPassos++;
         }
+
+        this.comecarHtml.removeAttribute('disabled');
 
         return (this.qtdPassos >= this.limiteDePassos) ? SituacaoBusca.LimiteDePassosExcedido : SituacaoBusca.MetaNaoEncontrada;
     }
     public async buscaEstrela(): Promise<SituacaoBusca> {
+
+
+        this.comecarHtml.setAttribute('disabled', 'true');
+
         const inicio = new Celula(this.posL, this.posC);
         const fim = this.mapa.getMeta();
 
@@ -94,15 +113,21 @@ export class Robo {
             for (let i = 1; i < caminho.length; i++) {
                 const celula = caminho[i];
                 const metaEncontrada = this.mapa.verificarMetaEncontrada(celula);
+
                 await this.movimentar(celula, metaEncontrada);
+                this.qtdPassos++;
+
                 this.trajeto.push([this.posL, this.posC]);
 
                 if (metaEncontrada) {
+                    this.comecarHtml.removeAttribute('disabled');
+
                     return SituacaoBusca.MetaEncontrada;
+
                 }
             }
         }
-
+        this.comecarHtml.removeAttribute('disabled');
         return SituacaoBusca.MetaNaoEncontrada;
     }
 
@@ -166,7 +191,11 @@ export class Robo {
                         abertos.push(vizinho);
                     }
                 }
+
+
             }
+
+
         }
 
         return null;
@@ -245,7 +274,7 @@ export class Robo {
         }
 
         this.roboRef.style.transform = `rotate(${this.direcao}deg)`;
-
+    
         return new Promise(resolve => setTimeout(resolve, this.DELAY_ROTACAO));
     }
 }
